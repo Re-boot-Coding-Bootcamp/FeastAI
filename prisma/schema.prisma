@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider        = "prisma-client-js"
     previewFeatures = ["driverAdapters"]
@@ -10,21 +7,74 @@ datasource db {
     provider = "mysql"
     url      = env("DATABASE_URL")
 
-    // If you have enabled foreign key constraints for your database, remove this line.
+    // Do not use foreign keys (PlanetScale does not support them)
     relationMode = "prisma"
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+// Bazaar schema
+model Category {
+    id          String    @id @default(cuid())
+    name        String
+    description String?
+    products    Product[]
+}
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
+model Image {
+    id               String @id @default(cuid())
+    productVariantId String
+    url              String
 
-    @@index([name])
-    @@index([createdById])
+    productVariant ProductVariant @relation(fields: [productVariantId], references: [id])
+
+    @@index([productVariantId])
+}
+
+model Product {
+    id          String           @id @default(cuid())
+    name        String
+    description String
+    categoryId  String
+    variants    ProductVariant[]
+    createdAt   DateTime         @default(now())
+
+    category Category @relation(fields: [categoryId], references: [id])
+
+    @@index([categoryId])
+}
+
+model ProductVariant {
+    id           String   @id @default(cuid())
+    productId    String
+    price        Float
+    size         String
+    color        String
+    stock        Int
+    quantitySold Int      @default(0)
+    images       Image[]
+    createdAt    DateTime @default(now())
+
+    product  Product    @relation(fields: [productId], references: [id])
+    CartItem CartItem[]
+
+    @@index([productId])
+}
+
+model Cart {
+    id    String     @id @default(cuid())
+    items CartItem[]
+}
+
+model CartItem {
+    id               String @id @default(cuid())
+    cartId           String
+    productVariantId String
+    quantity         Int
+
+    cart           Cart           @relation(fields: [cartId], references: [id])
+    productVariant ProductVariant @relation(fields: [productVariantId], references: [id])
+
+    @@index([cartId])
+    @@index([productVariantId])
 }
 
 // Necessary for Next auth
@@ -65,7 +115,6 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
 }
 
 model VerificationToken {
@@ -75,3 +124,5 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+// Feast AI schema

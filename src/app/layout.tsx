@@ -6,6 +6,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import { MainLayout } from "~/layouts";
 
 export const metadata = {
   title: "Feast AI",
@@ -21,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <MainLayout>{children}</MainLayout>
+        </TRPCReactProvider>
       </body>
     </html>
   );

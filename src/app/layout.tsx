@@ -1,10 +1,11 @@
 import "~/styles/globals.css";
 
-import { Roboto } from "next/font/google";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 import { TRPCReactProvider } from "~/trpc/react";
-
-const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
 export const metadata = {
   title: "Feast AI",
@@ -19,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
+      <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>

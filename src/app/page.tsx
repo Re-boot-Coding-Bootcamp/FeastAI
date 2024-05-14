@@ -1,18 +1,14 @@
-import Link from "next/link";
+"use client";
 
-import { getServerAuthSession } from "~/server/auth";
+import { redirect } from "next/navigation";
+import { useAppContext } from "~/context";
 
-export default async function Home() {
-  const session = await getServerAuthSession();
+export default function Home() {
+  const { authMode } = useAppContext();
 
-  return (
-    <main>
-      <div>
-        <p>{session && <span>Logged in as {session.user.name}</span>}</p>
-        <Link href={session ? "/api/auth/signout" : "/api/auth/signin"}>
-          {session ? "Sign out" : "Sign in"}
-        </Link>
-      </div>
-    </main>
-  );
+  if (!authMode) {
+    redirect("/signin");
+  }
+
+  return <div>homepage</div>;
 }

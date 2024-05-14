@@ -12,11 +12,11 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { blueGrey } from "@mui/material/colors";
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Avatar } from "./Avatar";
+import theme from "~/theme";
 
 const pages = ["Meal Plans"];
 
@@ -36,10 +36,24 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ bgcolor: blueGrey[800] }}>
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: theme.palette.grey[900],
+        backgroundImage: "none",
+        boxShadow: "none",
+        borderBottom: `1px solid ${theme.palette.divider}`,
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <AdbIcon
+            sx={{
+              display: { xs: "none", md: "flex" },
+              mr: 1,
+              color: theme.palette.primary.light,
+            }}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -51,7 +65,7 @@ const Navbar = () => {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: theme.palette.primary.light,
               textDecoration: "none",
             }}
           >
@@ -94,8 +108,14 @@ const Navbar = () => {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
 
+          <AdbIcon
+            sx={{
+              display: { xs: "flex", md: "none" },
+              mr: 1,
+              color: theme.palette.primary.light,
+            }}
+          />
           <Typography
             variant="h5"
             noWrap
@@ -108,7 +128,7 @@ const Navbar = () => {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: theme.palette.primary.light,
               textDecoration: "none",
             }}
           >
@@ -136,7 +156,11 @@ const Navbar = () => {
             )}
 
             <Link href={session ? "/api/auth/signout" : "/api/auth/signin"}>
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
+              <Button
+                color="inherit"
+                variant="outlined"
+                sx={{ my: 2, display: "block" }}
+              >
                 {session ? "Sign out" : "Sign in"}
               </Button>
             </Link>

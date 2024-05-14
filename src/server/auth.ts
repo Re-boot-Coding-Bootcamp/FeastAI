@@ -36,6 +36,10 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  pages: {
+    signIn: "/signin",
+    signOut: "/signout",
+  },
   callbacks: {
     async session({ session, token }) {
       const user = {

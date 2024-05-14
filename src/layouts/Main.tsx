@@ -2,18 +2,27 @@
 
 import React from "react";
 import { Navbar } from "~/components";
-import { SessionProvider } from "next-auth/react";
+import { Providers } from "./Providers";
+import { useAppContext } from "~/context";
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
+  const { authMode } = useAppContext();
+
   return (
-    <SessionProvider>
-      <Navbar />
-      {children}
-    </SessionProvider>
+    <Providers>
+      {authMode ? (
+        <>
+          <Navbar />
+          {children}
+        </>
+      ) : (
+        children
+      )}
+    </Providers>
   );
 };
 

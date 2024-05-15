@@ -1,12 +1,13 @@
-import { createContext, useContext, useState } from "react";
+import { useSession } from "next-auth/react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface IAppContext {
-  authMode: "credential" | "guest" | null;
-  setAuthMode?: (mode: "credential" | "guest" | null) => void;
+  authMode: "credential" | "guest";
+  setAuthMode?: (mode: "credential" | "guest") => void;
 }
 
 const defaultAppContext: IAppContext = {
-  authMode: null,
+  authMode: "guest",
 };
 
 const AppContext = createContext<IAppContext>(defaultAppContext);
@@ -16,7 +17,14 @@ interface AppContextProps {
 }
 
 const AppContenxtProvider = ({ children }: AppContextProps) => {
-  const [authMode, setAuthMode] = useState<"credential" | "guest" | null>(null);
+  const { data } = useSession();
+  const [authMode, setAuthMode] = useState<"credential" | "guest">("guest");
+
+  useEffect(() => {
+    if (data) {
+      setAuthMode("credential");
+    }
+  }, [data]);
 
   return (
     <AppContext.Provider value={{ authMode, setAuthMode }}>

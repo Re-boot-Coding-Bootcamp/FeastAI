@@ -20,9 +20,6 @@ import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useAppContext } from "~/context";
-import Image from "next/image";
-
-import Logo from "~/assets/feast-ai-logo.png";
 
 type LoginFormFields = {
   email: string;
@@ -33,15 +30,7 @@ export default function SignInPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [signInError, setSignInError] = useState(false);
-  const { setAuthMode } = useAppContext();
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
+  const { authMode, setAuthMode } = useAppContext();
 
   const {
     control,
@@ -60,6 +49,20 @@ export default function SignInPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [email, password]);
 
+  useEffect(() => {
+    if (authMode === "credential") {
+      router.push("/");
+    }
+  }, [authMode, router]);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
   const onSubmit: SubmitHandler<LoginFormFields> = async (data) => {
     const signInResponse = await signIn("credentials", {
       username: data.email,
@@ -75,16 +78,8 @@ export default function SignInPage() {
     }
   };
 
-  const handleGuestSignIn = () => {
-    setAuthMode?.("guest");
-    router.push("/");
-  };
-
   return (
     <Box display="flex" alignItems="center" flexDirection="column">
-      <Box m={4}>
-        <Image src={Logo} alt="logo" height={66} width={66} />
-      </Box>
       <Box
         sx={{
           maxWidth: "480px",
@@ -180,9 +175,6 @@ export default function SignInPage() {
             disabled={!isValid}
           >
             Login
-          </Button>
-          <Button variant="outlined" onClick={handleGuestSignIn}>
-            Continue as Guest
           </Button>
         </Stack>
       </Box>

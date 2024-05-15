@@ -12,14 +12,14 @@ interface ProvidersProps {
 
 const Providers = ({ children }: ProvidersProps) => {
   return (
-    <AppContenxtProvider>
-      <SessionProvider>
+    <SessionProvider>
+      <AppContenxtProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           {children}
         </ThemeProvider>
-      </SessionProvider>
-    </AppContenxtProvider>
+      </AppContenxtProvider>
+    </SessionProvider>
   );
 };
 

@@ -20,6 +20,9 @@ import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useAppContext } from "~/context";
+import Image from "next/image";
+
+import Logo from "~/assets/feast-ai-logo.png";
 
 type LoginFormFields = {
   email: string;
@@ -78,12 +81,15 @@ export default function SignInPage() {
   };
 
   return (
-    <Box display="flex" justifyContent="center">
+    <Box display="flex" alignItems="center" flexDirection="column">
+      <Box m={4}>
+        <Image src={Logo} alt="logo" height={66} width={66} />
+      </Box>
       <Box
         sx={{
           maxWidth: "480px",
           width: "100%",
-          py: "120px",
+          py: 10,
           px: 2,
         }}
       >

@@ -79,9 +79,21 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const user = await db.account.findUnique({
+        // look for user by email or username
+        const [user] = await db.account.findMany({
           where: {
-            username: credentials?.username,
+            OR: [
+              {
+                email: {
+                  equals: credentials.username,
+                },
+              },
+              {
+                username: {
+                  equals: credentials.username,
+                },
+              },
+            ],
           },
         });
 

@@ -106,10 +106,6 @@ export const authOptions: NextAuthOptions = {
           user.password // hashed password saved in the db
         );
 
-        // bcrypt.hash(credentials.password, 10, function (err, hash) {
-        //   console.log("==> hash", hash);
-        // });
-
         if (!isValid) {
           return null;
         }

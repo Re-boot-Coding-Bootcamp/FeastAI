@@ -10,41 +10,57 @@ import {
   Stepper,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 
-const steps = [
-  {
-    label: "Basic Information",
-    content: <>Step 1: Basic Information</>,
-    onContinue: () => {
-      // Save data to context
-    },
-  },
-  {
-    label: "Weight/Fitness Goal",
-    content: <>Step 2: Weight/Fitness Goal</>,
-    onContinue: () => {
-      // Save data to context
-    },
-  },
-  {
-    label: "Dietary Preferences",
-    content: <>Step 3: Dietary Preferences</>,
-    onContinue: () => {
-      // Save data to context
-    },
-  },
-  {
-    label: "Preferred Food Sources",
-    content: <>Step 4: Preferred Food Sources</>,
-    onContinue: () => {
-      // Save data to context
-    },
-  },
-];
+import {
+  BasicInformation,
+  DietaryPreferences,
+  PreferredFoodSources,
+  WeightAndFitnessGoal,
+} from "~/components";
+import type { QuestionnaireFields } from "~/types";
 
 export default function QuestionsPage() {
   const [activeStep, setActiveStep] = useState(0);
 
+  const formHook = useForm<QuestionnaireFields>({
+    defaultValues: {
+      gender: "female",
+    },
+  });
+
+  const steps = [
+    {
+      label: "Basic Information",
+      content: <BasicInformation formHook={formHook} />,
+      onContinue: () => {
+        // Save data to context
+      },
+    },
+    {
+      label: "Weight/Fitness Goal",
+      content: <WeightAndFitnessGoal formHook={formHook} />,
+      onContinue: () => {
+        // Save data to context
+      },
+    },
+    {
+      label: "Dietary Preferences",
+      content: <DietaryPreferences formHook={formHook} />,
+      onContinue: () => {
+        // Save data to context
+      },
+    },
+    {
+      label: "Preferred Food Sources",
+      content: <PreferredFoodSources formHook={formHook} />,
+      onContinue: () => {
+        // Save data to context
+      },
+    },
+  ];
+
+  /* STEP LOGIC */
   const isLastStep = activeStep === steps.length - 1;
   const allStepsCompleted = activeStep === steps.length;
 
@@ -55,6 +71,7 @@ export default function QuestionsPage() {
   const handleBackClick = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+  /* STEP LOGIC */
 
   return (
     <Stack
@@ -76,8 +93,6 @@ export default function QuestionsPage() {
       <Paper
         sx={{
           p: 2,
-          display: "flex",
-          justifyContent: "center",
         }}
       >
         {allStepsCompleted ? (

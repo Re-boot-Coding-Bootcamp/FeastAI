@@ -63,7 +63,16 @@ export default function SignInPage() {
     event.preventDefault();
   };
 
+  // const handlePasswordKeyDown = (event: React.KeyboardEvent) => {
+  //   event.preventDefault();
+  //   if (event.key === "Enter") {
+  //     console.log("==> trigger", event.key);
+  //     handleSubmit(onSubmit);
+  //   }
+  // };
+
   const onSubmit: SubmitHandler<LoginFormFields> = async (data) => {
+    console.log("==> trigger onSubmit");
     const signInResponse = await signIn("credentials", {
       username: data.email,
       password: data.password,
@@ -127,10 +136,6 @@ export default function SignInPage() {
             control={control}
             rules={{
               required: "Password is required",
-              // pattern: {
-              //   value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
-              //   message: "Invalid password",
-              // },
             }}
             render={({ field }) => (
               <TextField
@@ -141,6 +146,7 @@ export default function SignInPage() {
                 error={!!errors.password}
                 helperText={errors.password?.message}
                 InputProps={{
+                  // onKeyDown: handlePasswordKeyDown,
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton

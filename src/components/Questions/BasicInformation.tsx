@@ -4,10 +4,13 @@ import {
   Box,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   InputAdornment,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   Stack,
   TextField,
 } from "@mui/material";
@@ -20,11 +23,26 @@ import type { QuestionComponentProps } from "~/types";
 // Weight
 // Height
 // Activity
-// 			Sedentary (little to no exercise): 1.2
-// 			Lightly active (light exercise or sports 1-3 days a week): 1.375
-// 			Moderately active (moderate exercise or sports 3-5 days a week): 1.55
-// 			Very active (hard exercise or sports 6-7 days a week): 1.725
-// 			Super active (very hard exercise and a physical job or training twice a day): 1.9
+const activityLevels = [
+  { label: "Sedentary (little to no exercise)", value: 1.2 },
+  {
+    label: "Lightly active (light exercise or sports 1-3 days a week)",
+    value: 1.375,
+  },
+  {
+    label: "Moderately active (moderate exercise or sports 3-5 days a week)",
+    value: 1.55,
+  },
+  {
+    label: "Very active (hard exercise or sports 6-7 days a week)",
+    value: 1.725,
+  },
+  {
+    label:
+      "Super active (very hard exercise and a physical job or training twice a day)",
+    value: 1.9,
+  },
+];
 
 // type QuestionnaireFields = {
 //   gender: string;
@@ -257,6 +275,40 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
               />
               <FormControlLabel value="male" control={<Radio />} label="Male" />
             </RadioGroup>
+          </FormControl>
+        )}
+      />
+      <Controller
+        name="activity"
+        control={control}
+        rules={{
+          required: "Activity level is required",
+        }}
+        render={({ field }) => (
+          <FormControl id="activity-level" sx={{ gap: 1 }}>
+            <FormLabel id="activity-level-label" sx={{ color: "white" }}>
+              Acvitity Level
+            </FormLabel>
+            <Box width={1}>
+              <Select
+                {...field}
+                labelId="activity-level-label"
+                size="small"
+                error={!!errors.activity}
+                sx={{ width: 1 }}
+              >
+                {activityLevels.map(({ label, value }) => (
+                  <MenuItem key={value} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.activity?.message && (
+                <FormHelperText error={true}>
+                  {errors.activity?.message}
+                </FormHelperText>
+              )}
+            </Box>
           </FormControl>
         )}
       />

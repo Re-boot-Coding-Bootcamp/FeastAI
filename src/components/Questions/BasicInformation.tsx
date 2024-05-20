@@ -50,6 +50,54 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
 
   return (
     <Stack gap={2}>
+      <Controller
+        name="weight"
+        control={control}
+        rules={{
+          required: "Weight is required",
+          min: {
+            value: 0,
+            message: "Weight must be greater than or equal to 0",
+          },
+        }}
+        render={({ field }) => (
+          <FormControl id="weight" sx={{ gap: 1 }}>
+            <FormLabel id="weight-label" sx={{ color: "white" }}>
+              Weight
+            </FormLabel>
+            <TextField
+              {...field}
+              type="number"
+              aria-labelledby="weight-label"
+              variant="outlined"
+              size="small"
+              error={!!errors.weight}
+              helperText={errors.weight?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end" sx={{ color: "red" }}>
+                    lbs
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                flex: 1,
+                "& input[type=number]": {
+                  MozAppearance: "textfield",
+                },
+                "& input[type=number]::-webkit-outer-spin-button": {
+                  WebkitAppearance: "none",
+                  margin: 0,
+                },
+                "& input[type=number]::-webkit-inner-spin-button": {
+                  WebkitAppearance: "none",
+                  margin: 0,
+                },
+              }}
+            />
+          </FormControl>
+        )}
+      />
       <FormControl id="height" sx={{ gap: 1 }}>
         <FormLabel id="height-label" sx={{ color: "white" }}>
           Height
@@ -146,6 +194,47 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
           />
         </Box>
       </FormControl>
+      <Controller
+        name="age"
+        control={control}
+        rules={{
+          required: "Age is required",
+          min: {
+            value: 1,
+            message: "Age must be greater than or equal to 1",
+          },
+        }}
+        render={({ field }) => (
+          <FormControl id="age" sx={{ gap: 1 }}>
+            <FormLabel id="age-label" sx={{ color: "white" }}>
+              Age
+            </FormLabel>
+            <TextField
+              {...field}
+              type="number"
+              aria-labelledby="age-label"
+              variant="outlined"
+              size="small"
+              error={!!errors.age}
+              helperText={errors.age?.message}
+              sx={{
+                flex: 1,
+                "& input[type=number]": {
+                  MozAppearance: "textfield",
+                },
+                "& input[type=number]::-webkit-outer-spin-button": {
+                  WebkitAppearance: "none",
+                  margin: 0,
+                },
+                "& input[type=number]::-webkit-inner-spin-button": {
+                  WebkitAppearance: "none",
+                  margin: 0,
+                },
+              }}
+            />
+          </FormControl>
+        )}
+      />
       <Controller
         name="gender"
         control={control}

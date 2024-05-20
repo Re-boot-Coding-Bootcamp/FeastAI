@@ -24,6 +24,7 @@ export default function QuestionsPage() {
   const [activeStep, setActiveStep] = useState(0);
 
   const formHook = useForm<QuestionnaireFields>({
+    mode: "onTouched",
     defaultValues: {
       gender: "female",
     },

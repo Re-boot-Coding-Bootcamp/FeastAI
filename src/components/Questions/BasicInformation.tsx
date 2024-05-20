@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Box,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -43,52 +44,108 @@ import type { QuestionComponentProps } from "~/types";
 
 const BasicInformation = ({ formHook }: QuestionComponentProps) => {
   const {
-    watch,
     control,
     formState: { errors },
   } = formHook;
 
-  const gender = watch("gender");
-
-  console.log("==> gender", gender);
-
   return (
-    <Stack>
-      <Controller
-        name="height"
-        control={control}
-        rules={{ required: "Height is required" }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            type="number"
-            label="Height"
-            variant="outlined"
-            error={!!errors.weight}
-            helperText={errors.weight?.message}
-            inputProps={{
-              endAdornment: (
-                <InputAdornment position="end" sx={{ color: "red" }}>
-                  ft
-                </InputAdornment>
-              ),
-            }}
-            sx={{
-              "& input[type=number]": {
-                "-moz-appearance": "textfield",
-              },
-              "& input[type=number]::-webkit-outer-spin-button": {
-                "-webkit-appearance": "none",
-                margin: 0,
-              },
-              "& input[type=number]::-webkit-inner-spin-button": {
-                "-webkit-appearance": "none",
-                margin: 0,
+    <Stack gap={2}>
+      <FormControl id="height" sx={{ gap: 1 }}>
+        <FormLabel id="height-label" sx={{ color: "white" }}>
+          Height
+        </FormLabel>
+        <Box display="flex" width={1} gap={1}>
+          <Controller
+            name="heightFeet"
+            control={control}
+            rules={{
+              required: "Height (ft) is required",
+              min: {
+                value: 0,
+                message: "Height (ft) must be greater than or equal to 0",
               },
             }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                type="number"
+                aria-labelledby="height-label"
+                variant="outlined"
+                size="small"
+                error={!!errors.heightFeet}
+                helperText={errors.heightFeet?.message}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end" sx={{ color: "red" }}>
+                      ft
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  flex: 1,
+                  "& input[type=number]": {
+                    MozAppearance: "textfield",
+                  },
+                  "& input[type=number]::-webkit-outer-spin-button": {
+                    WebkitAppearance: "none",
+                    margin: 0,
+                  },
+                  "& input[type=number]::-webkit-inner-spin-button": {
+                    WebkitAppearance: "none",
+                    margin: 0,
+                  },
+                }}
+              />
+            )}
           />
-        )}
-      />
+          <Controller
+            name="heightInches"
+            control={control}
+            rules={{
+              required: "Height (inches) is required",
+              min: {
+                value: 0,
+                message: "Height (inches) must be greater than or equal to 0",
+              },
+              max: {
+                value: 11,
+                message: "Height (inches) must be less than or equal to 11",
+              },
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                type="number"
+                variant="outlined"
+                size="small"
+                error={!!errors.heightInches}
+                helperText={errors.heightInches?.message}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end" sx={{ color: "red" }}>
+                      inches
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  flex: 1,
+                  "& input[type=number]": {
+                    MozAppearance: "textfield",
+                  },
+                  "& input[type=number]::-webkit-outer-spin-button": {
+                    WebkitAppearance: "none",
+                    margin: 0,
+                  },
+                  "& input[type=number]::-webkit-inner-spin-button": {
+                    WebkitAppearance: "none",
+                    margin: 0,
+                  },
+                }}
+              />
+            )}
+          />
+        </Box>
+      </FormControl>
       <Controller
         name="gender"
         control={control}

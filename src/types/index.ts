@@ -4,7 +4,8 @@ export type QuestionnaireFields = {
   gender: string;
   age: number;
   weight: number;
-  height: number;
+  heightFeet: number;
+  heightInches: number;
   activity: number;
   fitnessGoal: string;
   veganOrVegetarian: string;

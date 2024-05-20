@@ -24,6 +24,7 @@ import type { QuestionComponentProps } from "~/types";
 // Height
 // Activity
 const activityLevels = [
+  { label: "Select your activity level", value: -1 },
   { label: "Sedentary (little to no exercise)", value: 1.2 },
   {
     label: "Lightly active (light exercise or sports 1-3 days a week)",
@@ -283,6 +284,10 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
         control={control}
         rules={{
           required: "Activity level is required",
+          min: {
+            value: 0,
+            message: "Activity level is required",
+          },
         }}
         render={({ field }) => (
           <FormControl id="activity-level" sx={{ gap: 1 }}>

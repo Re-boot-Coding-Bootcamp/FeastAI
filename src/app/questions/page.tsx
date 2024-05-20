@@ -27,8 +27,34 @@ export default function QuestionsPage() {
     mode: "onTouched",
     defaultValues: {
       gender: "female",
+      activity: -1,
     },
   });
+
+  const step1Valid =
+    formHook
+      .watch([
+        "activity",
+        "age",
+        "heightFeet",
+        "heightInches",
+        "weight",
+        "gender",
+      ])
+      .filter((val) => !val || val === -1).length === 0;
+
+  const checkStepValied = (step: number) => {
+    switch (step) {
+      case 0:
+        return step1Valid;
+      case 1:
+        return false;
+      case 2:
+        return false;
+      case 3:
+        return false;
+    }
+  };
 
   const steps = [
     {
@@ -116,6 +142,7 @@ export default function QuestionsPage() {
           <Button
             onClick={handleNextClick}
             variant="contained"
+            disabled={!checkStepValied(activeStep)}
             sx={{ flexGrow: { xs: 1, md: 0 } }}
           >
             {isLastStep ? "Finish" : "Next"}

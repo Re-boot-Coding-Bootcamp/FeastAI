@@ -82,8 +82,8 @@ const WeightAndFitnessGoal = ({ formHook }: QuestionComponentProps) => {
                           <Image
                             src={option.image}
                             alt={`${option.value}-illustration`}
-                            height={isLargeScreen ? 130 : 250}
-                            width={isLargeScreen ? 130 : 250}
+                            height={isLargeScreen ? 130 : 200}
+                            width={isLargeScreen ? 130 : 200}
                           />
                         </Box>
                         <Typography

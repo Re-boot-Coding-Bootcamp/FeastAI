@@ -28,6 +28,7 @@ export default function QuestionsPage() {
     defaultValues: {
       gender: "female",
       activity: -1,
+      veganOrVegetarian: "neither",
     },
   });
 
@@ -52,7 +53,7 @@ export default function QuestionsPage() {
       case 1:
         return step2Valid;
       case 2:
-        return false;
+        return true;
       case 3:
         return false;
     }

@@ -43,12 +43,14 @@ export default function QuestionsPage() {
       ])
       .filter((val) => !val || val === -1).length === 0;
 
+  const step2Valid = !!formHook.watch("fitnessGoal");
+
   const checkStepValied = (step: number) => {
     switch (step) {
       case 0:
         return step1Valid;
       case 1:
-        return false;
+        return step2Valid;
       case 2:
         return false;
       case 3:

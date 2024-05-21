@@ -18,8 +18,8 @@ import SignOutDialog from "./SignOutDialog";
 
 const pages = [
   {
-    name: "Meal Plans",
-    href: "/meal-plans",
+    name: "Feast AI",
+    href: "/",
   },
 ];
 

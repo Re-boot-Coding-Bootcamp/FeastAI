@@ -18,12 +18,7 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import type { QuestionComponentProps } from "~/types";
 
-// Gender
-// Age
-// Weight
-// Height
-// Activity
-const activityLevels = [
+const ACTIVITY_LEVELS = [
   { label: "Select your activity level", value: -1 },
   { label: "Sedentary (little to no exercise)", value: 1.2 },
   {
@@ -44,22 +39,6 @@ const activityLevels = [
     value: 1.9,
   },
 ];
-
-// type QuestionnaireFields = {
-//   gender: string;
-//   age: number;
-//   weight: number;
-//   height: number;
-//   activity: number;
-//   fitnessGoal: "maintain" | "cut" | "bulk";
-//   veganOrVegetarian: "vegan" | "vegetarian" | null;
-//   allergies: string[];
-//   avoid: string[];
-//   dislikes: string[];
-//   preferredProteinSources: string[];
-//   preferredCarbSources: string[];
-//   preferredFatSources: string[];
-// };
 
 const BasicInformation = ({ formHook }: QuestionComponentProps) => {
   const {
@@ -302,7 +281,7 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
                 error={!!errors.activity}
                 sx={{ width: 1 }}
               >
-                {activityLevels.map(({ label, value }) => (
+                {ACTIVITY_LEVELS.map(({ label, value }) => (
                   <MenuItem key={value} value={value}>
                     {label}
                   </MenuItem>

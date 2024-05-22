@@ -9,12 +9,21 @@ export type QuestionnaireFields = {
   activity: number;
   fitnessGoal: string;
   veganOrVegetarian: string;
-  allergies: string[];
-  avoid: string[];
-  dislikes: string[];
-  preferredProteinSources: string[];
-  preferredCarbSources: string[];
-  preferredFatSources: string[];
+  allergies: string;
+  avoid: string;
+  dislikes: string;
+  preferredProteinSources: {
+    name: string;
+    type: string;
+  }[];
+  preferredCarbSources: {
+    name: string;
+    type: string;
+  }[];
+  preferredFatSources: {
+    name: string;
+    type: string;
+  }[];
 };
 
 export type QuestionsFormHook = UseFormReturn<

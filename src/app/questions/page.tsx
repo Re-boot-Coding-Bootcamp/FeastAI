@@ -9,6 +9,7 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -17,11 +18,16 @@ import {
   DietaryPreferences,
   PreferredFoodSources,
   WeightAndFitnessGoal,
+  ConfirmSubmissionDialog,
 } from "~/components";
+import { useAppContext } from "~/context";
 import type { QuestionnaireFields } from "~/types";
 
 export default function QuestionsPage() {
+  const router = useRouter();
+  const { setDataSubmitted } = useAppContext();
   const [activeStep, setActiveStep] = useState(0);
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
 
   const formHook = useForm<QuestionnaireFields>({
     mode: "onTouched",
@@ -29,6 +35,12 @@ export default function QuestionsPage() {
       gender: "female",
       activity: -1,
       veganOrVegetarian: "neither",
+      allergies: "",
+      avoid: "",
+      dislikes: "",
+      preferredCarbSources: [],
+      preferredProteinSources: [],
+      preferredFatSources: [],
     },
   });
 
@@ -55,7 +67,7 @@ export default function QuestionsPage() {
       case 2:
         return true;
       case 3:
-        return false;
+        return true;
     }
   };
 
@@ -63,30 +75,18 @@ export default function QuestionsPage() {
     {
       label: "Basic Information",
       content: <BasicInformation formHook={formHook} />,
-      onContinue: () => {
-        // Save data to context
-      },
     },
     {
       label: "Weight/Fitness Goal",
       content: <WeightAndFitnessGoal formHook={formHook} />,
-      onContinue: () => {
-        // Save data to context
-      },
     },
     {
       label: "Dietary Preferences",
       content: <DietaryPreferences formHook={formHook} />,
-      onContinue: () => {
-        // Save data to context
-      },
     },
     {
       label: "Preferred Food Sources",
       content: <PreferredFoodSources formHook={formHook} />,
-      onContinue: () => {
-        // Save data to context
-      },
     },
   ];
 
@@ -95,6 +95,10 @@ export default function QuestionsPage() {
   const allStepsCompleted = activeStep === steps.length;
 
   const handleNextClick = () => {
+    if (isLastStep) {
+      setShowConfirmationDialog(true);
+      return;
+    }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -104,54 +108,67 @@ export default function QuestionsPage() {
   /* STEP LOGIC */
 
   return (
-    <Stack
-      pt={4}
-      px={2}
-      gap={2}
-      sx={{
-        maxWidth: 600,
-        margin: "auto",
-      }}
-    >
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map(({ label }) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <Paper
+    <>
+      <Stack
+        pt={4}
+        px={2}
+        gap={2}
         sx={{
-          p: 2,
+          maxWidth: 600,
+          margin: "auto",
         }}
       >
-        {allStepsCompleted ? (
-          <>{`You're all done!`}</>
-        ) : (
-          steps[activeStep]?.content
-        )}
-      </Paper>
-      {!allStepsCompleted && (
-        <Box display="flex" justifyContent="flex-end" gap={1}>
-          {activeStep > 0 && (
+        <Stepper activeStep={activeStep} alternativeLabel>
+          {steps.map(({ label }) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <Paper
+          sx={{
+            p: 2,
+          }}
+        >
+          {allStepsCompleted ? (
+            <>{`You're all done!`}</>
+          ) : (
+            steps[activeStep]?.content
+          )}
+        </Paper>
+        {!allStepsCompleted && (
+          <Box display="flex" justifyContent="flex-end" gap={1}>
+            {activeStep > 0 && (
+              <Button
+                onClick={handleBackClick}
+                variant="outlined"
+                sx={{ flexGrow: { xs: 1, md: 0 } }}
+              >
+                Back
+              </Button>
+            )}
             <Button
-              onClick={handleBackClick}
-              variant="outlined"
+              onClick={handleNextClick}
+              variant="contained"
+              disabled={!checkStepValied(activeStep)}
               sx={{ flexGrow: { xs: 1, md: 0 } }}
             >
-              Back
+              {isLastStep ? "Finish" : "Next"}
             </Button>
-          )}
-          <Button
-            onClick={handleNextClick}
-            variant="contained"
-            disabled={!checkStepValied(activeStep)}
-            sx={{ flexGrow: { xs: 1, md: 0 } }}
-          >
-            {isLastStep ? "Finish" : "Next"}
-          </Button>
-        </Box>
+          </Box>
+        )}
+      </Stack>
+      {showConfirmationDialog && (
+        <ConfirmSubmissionDialog
+          open={true}
+          handleClose={() => setShowConfirmationDialog(false)}
+          onSubmit={async () => {
+            const data = formHook.getValues();
+            setDataSubmitted?.(data);
+            router.push("/");
+          }}
+        />
       )}
-    </Stack>
+    </>
   );
 }

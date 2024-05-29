@@ -26,6 +26,16 @@ export type QuestionnaireFields = {
   }[];
 };
 
+export type DataForAI = {
+  tdee: number;
+  caloriesForFitnessGoal: number;
+  veganOrVegetarian: string;
+  cantEat: string;
+  preferredProteinSources: string;
+  preferredCarbSources: string;
+  preferredFatSources: string;
+};
+
 export type QuestionsFormHook = UseFormReturn<
   QuestionnaireFields,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

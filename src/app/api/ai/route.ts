@@ -15,24 +15,35 @@ async function POST(req: Request) {
       preferredProteinSources,
       preferredCarbSources,
       preferredFatSources,
+      macroNutrientRatio,
     } = (await req.json()) as DataForAI;
 
-    const aiResponse = await openai.chat.completions.create({
-      temperature: 0.5,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a Full Stack Web Development Coding Bootcamp Tutor, you help evaluate my code.",
-        },
-        // {
-        //   role: "system",
-        //   content: `Question: ${question}`,
-        // },
-      ],
-      model: "gpt-4o",
-      n: 1,
+    console.log("==> Request received", {
+      tdee,
+      caloriesForFitnessGoal,
+      veganOrVegetarian,
+      preferredProteinSources,
+      preferredCarbSources,
+      preferredFatSources,
+      macroNutrientRatio,
     });
+
+    // const aiResponse = await openai.chat.completions.create({
+    //   temperature: 0.5,
+    //   messages: [
+    //     {
+    //       role: "system",
+    //       content:
+    //         "You are a Full Stack Web Development Coding Bootcamp Tutor, you help evaluate my code.",
+    //     },
+    //     // {
+    //     //   role: "system",
+    //     //   content: `Question: ${question}`,
+    //     // },
+    //   ],
+    //   model: "gpt-4o",
+    //   n: 1,
+    // });
 
     return new Response(JSON.stringify({ message: "Request received" }), {
       status: 200,

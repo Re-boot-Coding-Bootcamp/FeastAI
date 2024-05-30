@@ -17,6 +17,7 @@ import { Controller } from "react-hook-form";
 import type { QuestionComponentProps } from "~/types";
 
 import theme from "~/theme";
+import { red } from "@mui/material/colors";
 
 const WeightAndFitnessGoal = ({ formHook }: QuestionComponentProps) => {
   const { control } = formHook;
@@ -50,7 +51,10 @@ const WeightAndFitnessGoal = ({ formHook }: QuestionComponentProps) => {
         render={({ field }) => (
           <FormControl>
             <FormLabel id="fitness-goal-group-label" sx={{ color: "white" }}>
-              Fitness Goal
+              Fitness Goal{" "}
+              <Typography component="span" color={red[300]}>
+                *
+              </Typography>
             </FormLabel>
             <RadioGroup
               {...field}

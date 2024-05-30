@@ -13,7 +13,9 @@ import {
   Select,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
+import { red } from "@mui/material/colors";
 import React from "react";
 import { Controller } from "react-hook-form";
 import type { QuestionComponentProps } from "~/types";
@@ -61,7 +63,10 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
         render={({ field }) => (
           <FormControl id="weight" sx={{ gap: 1 }}>
             <FormLabel id="weight-label" sx={{ color: "white" }}>
-              Weight
+              Weight{" "}
+              <Typography component="span" color={red[300]}>
+                *
+              </Typography>
             </FormLabel>
             <TextField
               {...field}
@@ -73,9 +78,7 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
               helperText={errors.weight?.message}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end" sx={{ color: "red" }}>
-                    lbs
-                  </InputAdornment>
+                  <InputAdornment position="end">lbs</InputAdornment>
                 ),
               }}
               sx={{
@@ -98,7 +101,10 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
       />
       <FormControl id="height" sx={{ gap: 1 }}>
         <FormLabel id="height-label" sx={{ color: "white" }}>
-          Height
+          Height{" "}
+          <Typography component="span" color={red[300]}>
+            *
+          </Typography>
         </FormLabel>
         <Box display="flex" width={1} gap={1}>
           <Controller
@@ -122,9 +128,7 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
                 helperText={errors.heightFeet?.message}
                 InputProps={{
                   endAdornment: (
-                    <InputAdornment position="end" sx={{ color: "red" }}>
-                      ft
-                    </InputAdornment>
+                    <InputAdornment position="end">ft</InputAdornment>
                   ),
                 }}
                 sx={{
@@ -168,9 +172,7 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
                 helperText={errors.heightInches?.message}
                 InputProps={{
                   endAdornment: (
-                    <InputAdornment position="end" sx={{ color: "red" }}>
-                      inches
-                    </InputAdornment>
+                    <InputAdornment position="end">inches</InputAdornment>
                   ),
                 }}
                 sx={{
@@ -205,7 +207,10 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
         render={({ field }) => (
           <FormControl id="age" sx={{ gap: 1 }}>
             <FormLabel id="age-label" sx={{ color: "white" }}>
-              Age
+              Age{" "}
+              <Typography component="span" color={red[300]}>
+                *
+              </Typography>
             </FormLabel>
             <TextField
               {...field}
@@ -240,7 +245,10 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
         render={({ field }) => (
           <FormControl>
             <FormLabel id="gender-group-label" sx={{ color: "white" }}>
-              Gender
+              Gender{" "}
+              <Typography component="span" color={red[300]}>
+                *
+              </Typography>
             </FormLabel>
             <RadioGroup
               {...field}
@@ -271,7 +279,10 @@ const BasicInformation = ({ formHook }: QuestionComponentProps) => {
         render={({ field }) => (
           <FormControl id="activity-level" sx={{ gap: 1 }}>
             <FormLabel id="activity-level-label" sx={{ color: "white" }}>
-              Acvitity Level
+              Acvitity Level{" "}
+              <Typography component="span" color={red[300]}>
+                *
+              </Typography>
             </FormLabel>
             <Box width={1}>
               <Select

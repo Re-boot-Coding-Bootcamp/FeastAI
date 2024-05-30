@@ -24,6 +24,9 @@ export type QuestionnaireFields = {
     name: string;
     type: string;
   }[];
+  macroCarb: number;
+  macroProtein: number;
+  macroFat: number;
 };
 
 export type DataForAI = {
@@ -34,6 +37,11 @@ export type DataForAI = {
   preferredProteinSources: string;
   preferredCarbSources: string;
   preferredFatSources: string;
+  macroNutrientRatio: {
+    protein: number;
+    carbs: number;
+    fat: number;
+  };
 };
 
 export type QuestionsFormHook = UseFormReturn<

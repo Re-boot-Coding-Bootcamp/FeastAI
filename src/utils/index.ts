@@ -19,7 +19,7 @@ const calculateTDEE = (
 
   const tdee = bmr * activity;
 
-  return tdee;
+  return Math.floor(tdee);
 };
 
 const getCaloriesForFitnessGoal = (tdee: number, goal: string): number => {

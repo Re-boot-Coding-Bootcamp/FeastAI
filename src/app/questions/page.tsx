@@ -41,6 +41,9 @@ export default function QuestionsPage() {
       preferredCarbSources: [],
       preferredProteinSources: [],
       preferredFatSources: [],
+      macroCarb: 0,
+      macroProtein: 0,
+      macroFat: 0,
     },
   });
 
@@ -58,6 +61,11 @@ export default function QuestionsPage() {
 
   const step2Valid = !!formHook.watch("fitnessGoal");
 
+  const step4Valid =
+    formHook
+      .watch(["macroCarb", "macroProtein", "macroFat"])
+      .reduce((acc, val) => acc + parseInt(`${val || 0}`), 0) === 100;
+
   const checkStepValied = (step: number) => {
     switch (step) {
       case 0:
@@ -67,7 +75,7 @@ export default function QuestionsPage() {
       case 2:
         return true;
       case 3:
-        return true;
+        return step4Valid;
     }
   };
 

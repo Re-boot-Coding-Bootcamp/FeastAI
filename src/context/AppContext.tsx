@@ -97,6 +97,11 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
         preferredFatSources: dataSubmitted.preferredFatSources
           .map((item) => item.name)
           .join(","),
+        macroNutrientRatio: {
+          protein: dataSubmitted.macroProtein,
+          carbs: dataSubmitted.macroCarb,
+          fat: dataSubmitted.macroFat,
+        },
       };
 
       setDataForAI(dataForAI);

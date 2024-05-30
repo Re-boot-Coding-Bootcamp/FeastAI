@@ -30,7 +30,6 @@ export type QuestionnaireFields = {
 };
 
 export type DataForAI = {
-  tdee: number;
   caloriesForFitnessGoal: number;
   veganOrVegetarian: string;
   cantEat: string;

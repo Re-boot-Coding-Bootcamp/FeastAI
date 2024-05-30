@@ -34,7 +34,7 @@ export default function QuestionsPage() {
     defaultValues: {
       gender: "female",
       activity: -1,
-      veganOrVegetarian: "neither",
+      veganOrVegetarian: "non-specified",
       allergies: "",
       avoid: "",
       dislikes: "",

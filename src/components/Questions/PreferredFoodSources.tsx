@@ -62,6 +62,7 @@ const PreferredFoodSources = ({ formHook }: QuestionComponentProps) => {
               onChange={(e, value) => {
                 field.onChange(value);
               }}
+              disableCloseOnSelect
               multiple
               options={popularProteinSources}
               getOptionLabel={(option) => option.name}
@@ -88,6 +89,7 @@ const PreferredFoodSources = ({ formHook }: QuestionComponentProps) => {
             <Autocomplete
               {...field}
               multiple
+              disableCloseOnSelect
               options={popularCarbSources}
               getOptionLabel={(option) => option.name}
               groupBy={(option) => option.type}
@@ -116,6 +118,7 @@ const PreferredFoodSources = ({ formHook }: QuestionComponentProps) => {
             <Autocomplete
               {...field}
               multiple
+              disableCloseOnSelect
               options={popularFatSources}
               getOptionLabel={(option) => option.name}
               groupBy={(option) => option.type}

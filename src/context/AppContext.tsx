@@ -12,6 +12,7 @@ import {
   getCaloriesForFitnessGoal,
   stringToArray,
 } from "~/utils";
+import { mockData } from "./mockData";
 
 interface IAppContext {
   authMode: "credential" | "guest";
@@ -40,6 +41,14 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
   const [dataSubmitted, setDataSubmitted] =
     useState<QuestionnaireFields | null>();
 
+  // TODO: remove this block after done testing
+  useEffect(() => {
+    if (!dataSubmitted) {
+      setDataSubmitted(mockData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // calculated data
   const [dataForAI, setDataForAI] = useState<DataForAI | null>(null);
 
@@ -55,7 +64,7 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
     });
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const data = await response.json();
-    console.log(data);
+    console.log("==> ai response", data);
 
     setMealPlanGenerated(true);
     setIsGenerating(false);
@@ -63,6 +72,8 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
 
   useEffect(() => {
     if (dataSubmitted && !mealPlanGenerated) {
+      console.log("==> dataSubmitted", dataSubmitted);
+
       const tdee = calculateTDEE(
         dataSubmitted.gender,
         dataSubmitted.age,
@@ -84,7 +95,6 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
       ].join(",");
 
       const dataForAI = {
-        tdee,
         caloriesForFitnessGoal,
         veganOrVegetarian: dataSubmitted.veganOrVegetarian,
         cantEat: allCantEat,
@@ -103,6 +113,8 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
           fat: dataSubmitted.macroFat,
         },
       };
+
+      console.log("==> submitting data to AI", dataForAI);
 
       setDataForAI(dataForAI);
 

@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { CHUNK_ONE, CHUNK_THREE, CHUNK_TWO } from "~/constants/prompts";
 import { env } from "~/env";
 import type { DataForAI } from "~/types";
 
@@ -8,47 +9,35 @@ const openai = new OpenAI({
 
 async function POST(req: Request) {
   try {
-    const {
-      tdee,
-      caloriesForFitnessGoal,
-      veganOrVegetarian,
-      preferredProteinSources,
-      preferredCarbSources,
-      preferredFatSources,
-      macroNutrientRatio,
-    } = (await req.json()) as DataForAI;
+    const data = (await req.json()) as DataForAI;
 
-    console.log("==> Request received", {
-      tdee,
-      caloriesForFitnessGoal,
-      veganOrVegetarian,
-      preferredProteinSources,
-      preferredCarbSources,
-      preferredFatSources,
-      macroNutrientRatio,
+    const aiResponse = await openai.chat.completions.create({
+      temperature: 0.2,
+      messages: [
+        {
+          role: "system",
+          content: CHUNK_ONE,
+        },
+        {
+          role: "system",
+          content: CHUNK_TWO(data),
+        },
+        {
+          role: "system",
+          content: CHUNK_THREE,
+        },
+      ],
+      model: "gpt-4o",
+      n: 1,
     });
 
-    // const aiResponse = await openai.chat.completions.create({
-    //   temperature: 0.5,
-    //   messages: [
-    //     {
-    //       role: "system",
-    //       content:
-    //         "You are a Full Stack Web Development Coding Bootcamp Tutor, you help evaluate my code.",
-    //     },
-    //     // {
-    //     //   role: "system",
-    //     //   content: `Question: ${question}`,
-    //     // },
-    //   ],
-    //   model: "gpt-4o",
-    //   n: 1,
-    // });
-
-    return new Response(JSON.stringify({ message: "Request received" }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ content: aiResponse.choices[0]?.message.content }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   } catch (error) {
     return new Response(JSON.stringify(error), {
       status: 500,

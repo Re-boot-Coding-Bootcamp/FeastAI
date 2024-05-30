@@ -49,7 +49,7 @@ const DietaryPreferences = ({ formHook }: QuestionComponentProps) => {
                 label="Vegetarian"
               />
               <FormControlLabel
-                value="neither"
+                value="non-specified"
                 control={<Radio />}
                 label="Neither"
               />

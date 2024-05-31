@@ -15,6 +15,8 @@ import {
 import { mockData } from "./mockData";
 
 interface IAppContext {
+  dataForAI: DataForAI | null;
+  mealPlan: string | null;
   authMode: "credential" | "guest";
   isGenerating: boolean;
   setAuthMode?: (mode: "credential" | "guest") => void;
@@ -22,6 +24,8 @@ interface IAppContext {
 }
 
 const defaultAppContext: IAppContext = {
+  dataForAI: null,
+  mealPlan: null,
   authMode: "guest",
   isGenerating: false,
 };
@@ -37,6 +41,7 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
   const [authMode, setAuthMode] = useState<"credential" | "guest">("guest");
   const [isGenerating, setIsGenerating] = useState(false);
   const [mealPlanGenerated, setMealPlanGenerated] = useState(false);
+  const [mealPlan, setMealPlan] = useState<string | null>(null);
 
   const [dataSubmitted, setDataSubmitted] =
     useState<QuestionnaireFields | null>();
@@ -48,8 +53,6 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // calculated data
   const [dataForAI, setDataForAI] = useState<DataForAI | null>(null);
 
   const callGenerator = useCallback(async (input: DataForAI) => {
@@ -62,18 +65,15 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
       },
       body: JSON.stringify(input),
     });
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const data = await response.json();
-    console.log("==> ai response", data);
+    const { content } = (await response.json()) as { content: string };
+    setMealPlan(content);
 
     setMealPlanGenerated(true);
     setIsGenerating(false);
   }, []);
 
   useEffect(() => {
-    if (dataSubmitted && !mealPlanGenerated) {
-      console.log("==> dataSubmitted", dataSubmitted);
-
+    if (dataSubmitted && !mealPlanGenerated && !mealPlan) {
       const tdee = calculateTDEE(
         dataSubmitted.gender,
         dataSubmitted.age,
@@ -115,13 +115,11 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
         },
       };
 
-      console.log("==> submitting data to AI", dataForAI);
-
       setDataForAI(dataForAI);
 
       void callGenerator(dataForAI);
     }
-  }, [callGenerator, dataSubmitted, mealPlanGenerated]);
+  }, [callGenerator, dataSubmitted, mealPlan, mealPlanGenerated]);
 
   useEffect(() => {
     if (data) {
@@ -131,7 +129,14 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
 
   return (
     <AppContext.Provider
-      value={{ authMode, isGenerating, setAuthMode, setDataSubmitted }}
+      value={{
+        mealPlan,
+        dataForAI,
+        authMode,
+        isGenerating,
+        setAuthMode,
+        setDataSubmitted,
+      }}
     >
       {children}
     </AppContext.Provider>

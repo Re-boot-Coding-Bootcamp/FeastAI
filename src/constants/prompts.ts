@@ -31,7 +31,7 @@ Based on this information, generate a detailed meal plan for one week. The meal 
 - Ensure the total daily calories and macronutrients match the target values specified. Increse portion sizes when needed to ensure meeting the target values.
 
 Format the meal plan as follows:
-- Use the format 'Day X:'
+- Use the format '*** Day X:'
 - For each day, list the meals and snacks in this format:
   - 'Meal: [Meal Name]'
   - 'Items: [Food Items]'
@@ -40,10 +40,10 @@ Format the meal plan as follows:
   - 'Carbs: [Carbs grams]'
   - 'Fats: [Fats grams]'
   - 'Recipe: [Simple Recipe or Preparation Tips]'
-- Separate each meal and snack with a double newline for clarity.
 - For each day, display the total daily macronutrient breakdown at the end.
 - Ensure the total daily macronutrient and calorie values match the target values specified. +/- 5 grams for each macronutrient is acceptable.
 - No summary/conclusion/note is needed.
+- Output should be in markdown format.
 
 Generate the meal plan accordingly.
 `;

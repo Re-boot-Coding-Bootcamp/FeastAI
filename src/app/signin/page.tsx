@@ -63,14 +63,6 @@ export default function SignInPage() {
     event.preventDefault();
   };
 
-  // const handlePasswordKeyDown = (event: React.KeyboardEvent) => {
-  //   event.preventDefault();
-  //   if (event.key === "Enter") {
-  //     console.log("==> trigger", event.key);
-  //     handleSubmit(onSubmit);
-  //   }
-  // };
-
   const onSubmit: SubmitHandler<LoginFormFields> = async (data) => {
     console.log("==> trigger onSubmit");
     const signInResponse = await signIn("credentials", {

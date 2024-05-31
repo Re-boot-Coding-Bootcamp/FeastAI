@@ -107,10 +107,11 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
         preferredFatSources: dataSubmitted.preferredFatSources
           .map((item) => item.name)
           .join(","),
-        macroNutrientRatio: {
-          protein: dataSubmitted.macroProtein,
-          carbs: dataSubmitted.macroCarb,
-          fat: dataSubmitted.macroFat,
+        macroNutrient: {
+          protein:
+            (caloriesForFitnessGoal * (dataSubmitted.macroProtein / 100)) / 4,
+          carbs: (caloriesForFitnessGoal * (dataSubmitted.macroCarb / 100)) / 4,
+          fat: (caloriesForFitnessGoal * (dataSubmitted.macroFat / 100)) / 9,
         },
       };
 

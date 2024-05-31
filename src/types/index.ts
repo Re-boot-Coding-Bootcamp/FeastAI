@@ -36,7 +36,7 @@ export type DataForAI = {
   preferredProteinSources: string;
   preferredCarbSources: string;
   preferredFatSources: string;
-  macroNutrientRatio: {
+  macroNutrient: {
     protein: number;
     carbs: number;
     fat: number;

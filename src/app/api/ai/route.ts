@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { CHUNK_ONE, CHUNK_THREE, CHUNK_TWO } from "~/constants/prompts";
+import { getMealPlanPrompt } from "~/constants/prompts";
 import { env } from "~/env";
 import type { DataForAI } from "~/types";
 
@@ -11,20 +11,15 @@ async function POST(req: Request) {
   try {
     const data = (await req.json()) as DataForAI;
 
+    const prompt = getMealPlanPrompt(data);
+
+    // TODO: use a combination of the system prompt and the user's input to generate a response
     const aiResponse = await openai.chat.completions.create({
       temperature: 0.2,
       messages: [
         {
           role: "system",
-          content: CHUNK_ONE,
-        },
-        {
-          role: "system",
-          content: CHUNK_TWO(data),
-        },
-        {
-          role: "system",
-          content: CHUNK_THREE,
+          content: prompt,
         },
       ],
       model: "gpt-4o",

@@ -5,6 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import React from "react";
 import { AppContenxtProvider } from "~/context";
 import theme from "~/theme";
+import { SnackbarProvider } from "notistack";
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -15,8 +16,10 @@ const Providers = ({ children }: ProvidersProps) => {
     <SessionProvider>
       <AppContenxtProvider>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
+          <SnackbarProvider>
+            <CssBaseline />
+            {children}
+          </SnackbarProvider>
         </ThemeProvider>
       </AppContenxtProvider>
     </SessionProvider>

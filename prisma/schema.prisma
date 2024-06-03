@@ -79,12 +79,23 @@ model CartItem {
 
 // Necessary for Next auth
 model Account {
-    id        String @id @default(cuid())
-    email     String @unique
-    username  String @unique
+    id        String     @id @default(cuid())
+    email     String     @unique
+    username  String     @unique
     firstName String
     lastName  String
     password  String
+    MealPlan  MealPlan[]
 }
 
 // Feast AI schema
+model MealPlan {
+    id        String   @id @default(cuid())
+    content   String   @db.LongText
+    createdAt DateTime @default(now())
+
+    accountId String
+    account   Account @relation(fields: [accountId], references: [id])
+
+    @@index([accountId])
+}

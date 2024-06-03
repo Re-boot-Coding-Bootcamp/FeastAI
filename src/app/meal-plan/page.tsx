@@ -15,6 +15,7 @@ import Markdown from "react-markdown";
 import { useAppContext } from "~/context";
 import Link from "next/link";
 import { useState } from "react";
+import { MEAL_PLAN_SPLIT_REGEX } from "~/constants";
 
 export default function MealPlanDetailsPage() {
   const { mealPlan } = useAppContext();
@@ -22,8 +23,9 @@ export default function MealPlanDetailsPage() {
 
   const mealPlanPerDay = mealPlan
     ?.trim()
-    .split("*** ")
-    .filter((item) => item.includes("Day "));
+    .split(MEAL_PLAN_SPLIT_REGEX)
+    .filter((item) => item.trim() !== "")
+    .map((item) => item.trim());
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setDailyMealPlanIndex(newValue);

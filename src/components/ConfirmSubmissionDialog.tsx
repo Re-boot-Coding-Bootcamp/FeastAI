@@ -33,12 +33,6 @@ const ConfirmSubmissionDialog = ({
         <DialogContentText id="confirm-submission-dialog-description">
           {`Once you submit, we will start working on your meal plan, and you won't be able to make changes.`}
         </DialogContentText>
-        <DialogContentText id="confirm-submission-dialog-description-2">
-          {`If you're signed in, you can wait for your meal plan or check back later to view it on the dashboard.`}
-        </DialogContentText>
-        <DialogContentText id="confirm-submission-dialog-description-2">
-          {`If you're not signed in, hang tight and make sure not to refresh!`}
-        </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="inherit">

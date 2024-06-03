@@ -12,7 +12,8 @@ import {
   getCaloriesForFitnessGoal,
   stringToArray,
 } from "~/utils";
-import { mockData } from "./mockData";
+import { api } from "~/trpc/react";
+import { enqueueSnackbar } from "notistack";
 
 interface IAppContext {
   dataForAI: DataForAI | null;
@@ -42,35 +43,42 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [mealPlanGenerated, setMealPlanGenerated] = useState(false);
   const [mealPlan, setMealPlan] = useState<string | null>(null);
-
   const [dataSubmitted, setDataSubmitted] =
     useState<QuestionnaireFields | null>();
-
-  // TODO: remove this block after done testing
-  useEffect(() => {
-    if (!dataSubmitted) {
-      setDataSubmitted(mockData);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const [dataForAI, setDataForAI] = useState<DataForAI | null>(null);
 
-  const callGenerator = useCallback(async (input: DataForAI) => {
-    setIsGenerating(true);
+  const { mutateAsync: saveMealPlan } = api.mealPlan.create.useMutation();
+  const { data: existingMealPlan } = api.mealPlan.get.useQuery(undefined, {
+    enabled: authMode === "credential",
+  });
 
-    const response = await fetch("/api/ai", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(input),
-    });
-    const { content } = (await response.json()) as { content: string };
-    setMealPlan(content);
+  const callGenerator = useCallback(
+    async (input: DataForAI) => {
+      setIsGenerating(true);
 
-    setMealPlanGenerated(true);
-    setIsGenerating(false);
-  }, []);
+      const response = await fetch("/api/ai", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input),
+      });
+      const { content } = (await response.json()) as { content: string };
+
+      if (authMode === "credential") {
+        try {
+          await saveMealPlan({ content });
+        } catch {
+          enqueueSnackbar("Failed to save meal plan", { variant: "error" });
+        }
+      }
+
+      setMealPlan(content);
+      setMealPlanGenerated(true);
+      setIsGenerating(false);
+    },
+    [authMode, saveMealPlan]
+  );
 
   useEffect(() => {
     if (dataSubmitted && !mealPlanGenerated && !mealPlan) {
@@ -126,6 +134,12 @@ const AppContenxtProvider = ({ children }: AppContextProps) => {
       setAuthMode("credential");
     }
   }, [data]);
+
+  useEffect(() => {
+    if (existingMealPlan && !mealPlan) {
+      setMealPlan(existingMealPlan.content);
+    }
+  }, [existingMealPlan, mealPlan]);
 
   return (
     <AppContext.Provider

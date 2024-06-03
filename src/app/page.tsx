@@ -1,85 +1,74 @@
+"use client";
+
+import {
+  Button,
+  Container,
+  LinearProgress,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useMemo } from "react";
+import { useAppContext } from "~/context";
 
-import { CreatePost } from "~/app/_components/create-post";
-import { getServerAuthSession } from "~/server/auth";
-import { api } from "~/trpc/server";
-import styles from "./index.module.css";
+export default function Home() {
+  const { mealPlan, authMode, isGenerating } = useAppContext();
+  const { data } = useSession();
 
-export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
-  const session = await getServerAuthSession();
+  const homepageContent = useMemo(() => {
+    if (mealPlan) {
+      return (
+        <>
+          <Typography variant="body2">{`Your mean plan is ready, click on the button down below to check it out!`}</Typography>
+          <Button
+            LinkComponent={Link}
+            href={"/meal-plan"}
+            variant="contained"
+            id="meal-plan-nav-button"
+            sx={{ width: "fit-content" }}
+          >
+            See Meal Plan Details
+          </Button>
+        </>
+      );
+    }
+
+    if (isGenerating) {
+      return (
+        <>
+          <Typography variant="body2">{`We're working on your meal plan now, you'll see it here when it's ready!`}</Typography>
+          <LinearProgress />
+        </>
+      );
+    }
+
+    return (
+      <>
+        <Typography variant="body2">{`It seems like you don't have any meal plans yet, to get started, click on the button below to answer some questions!`}</Typography>
+        <Button
+          LinkComponent={Link}
+          href={"/questions"}
+          variant="outlined"
+          color="inherit"
+          sx={{ width: "fit-content" }}
+        >
+          Start The Questionaire
+        </Button>
+      </>
+    );
+  }, [isGenerating, mealPlan]);
 
   return (
-    <main className={styles.main}>
-      <div className={styles.container}>
-        <h1 className={styles.title}>
-          Create <span className={styles.pinkSpan}>T3</span> App
-        </h1>
-        <div className={styles.cardRow}>
-          <Link
-            className={styles.card}
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className={styles.cardTitle}>First Steps →</h3>
-            <div className={styles.cardText}>
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
-            </div>
-          </Link>
-          <Link
-            className={styles.card}
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className={styles.cardTitle}>Documentation →</h3>
-            <div className={styles.cardText}>
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
-          </Link>
-        </div>
-        <div className={styles.showcaseContainer}>
-          <p className={styles.showcaseText}>
-            {hello ? hello.greeting : "Loading tRPC query..."}
-          </p>
-
-          <div className={styles.authContainer}>
-            <p className={styles.showcaseText}>
-              {session && <span>Logged in as {session.user?.name}</span>}
-            </p>
-            <Link
-              href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              className={styles.loginButton}
-            >
-              {session ? "Sign out" : "Sign in"}
-            </Link>
-          </div>
-        </div>
-
-        <CrudShowcase />
-      </div>
-    </main>
-  );
-}
-
-async function CrudShowcase() {
-  const session = await getServerAuthSession();
-  if (!session?.user) return null;
-
-  const latestPost = await api.post.getLatest();
-
-  return (
-    <div className={styles.showcaseContainer}>
-      {latestPost ? (
-        <p className={styles.showcaseText}>
-          Your most recent post: {latestPost.name}
-        </p>
-      ) : (
-        <p className={styles.showcaseText}>You have no posts yet.</p>
-      )}
-
-      <CreatePost />
-    </div>
+    <Container maxWidth="xl">
+      <Paper
+        sx={{ p: 2, my: 2, display: "flex", flexDirection: "column", gap: 2 }}
+      >
+        <Typography variant="subtitle1">
+          Hello, {authMode === "guest" ? "Guest" : data?.user.name}!
+        </Typography>
+        {homepageContent}
+      </Paper>
+    </Container>
   );
 }

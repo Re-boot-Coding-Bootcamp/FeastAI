@@ -62,7 +62,7 @@ export default function Home() {
   return (
     <Container maxWidth="xl">
       <Paper
-        sx={{ p: 2, m: 2, display: "flex", flexDirection: "column", gap: 2 }}
+        sx={{ p: 2, my: 2, display: "flex", flexDirection: "column", gap: 2 }}
       >
         <Typography variant="subtitle1">
           Hello, {authMode === "guest" ? "Guest" : data?.user.name}!
